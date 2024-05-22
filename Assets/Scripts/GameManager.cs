@@ -4,12 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI FinalScoreText;
-    public GameObject gameOverPanel;
-    public int score;
-    private Canvas canvas;
+    public static GameManager Instance; // Singleton instance of the GameManager
+    public TextMeshProUGUI scoreText; // Reference to the UI text component for displaying the score
+    public TextMeshProUGUI FinalScoreText; // Reference to the UI text component for displaying the final score
+    public GameObject gameOverPanel; // Reference to the UI panel for displaying the game over screen
+    public int score; // Current score of the game
+    private Canvas canvas; // Reference to the UI canvas
+    AudioManager audioManager; // Reference to the AudioManager script
 
     void Awake()
     {
@@ -27,36 +28,36 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        ReacquireUIReferences();
-        InitializeGame();
+        ReacquireUIReferences(); // Get references to UI elements
+        InitializeGame(); // Initialize the game
     }
 
     void InitializeGame()
     {
-        score = 0;
-        UpdateScore();
+        score = 0; // Reset the score
+        UpdateScore(); // Update the score UI
         if (gameOverPanel != null)
         {
-            gameOverPanel.SetActive(false);
+            gameOverPanel.SetActive(false); // Hide the game over panel
         }
         Time.timeScale = 1; // Ensure the game time is running
     }
 
     public void CollectStar()
     {
-        score += 10;
-        UpdateScore();
+        score += 10; // Increase the score by 10 when a star is collected
+        UpdateScore(); // Update the score UI
     }
 
     void UpdateScore()
     {
         if (scoreText != null)
         {
-            scoreText.text = score.ToString(); // Convert score to string
+            scoreText.text = score.ToString(); // Convert score to string and update the score UI text
         }
         else
         {
-            Debug.LogError("ScoreText not found!");
+            Debug.LogError("ScoreText not found!"); // Log an error if the score text component is not found
         }
     }
 
@@ -64,55 +65,59 @@ public class GameManager : MonoBehaviour
     {
         if (gameOverPanel != null)
         {
-            gameOverPanel.SetActive(true);
-            FinalScoreText.text =  score.ToString();
+            gameOverPanel.SetActive(true); // Show the game over panel
+            FinalScoreText.text =  score.ToString(); // Update the final score UI text
         }
-        Time.timeScale = 0;
+        Time.timeScale = 0; // Pause the game
+        AudioManager.instance.StopAudio("event:/GameScene"); // Stop the game scene audio
+        AudioManager.instance.PlayAudio("event:/MainScene"); // Play the main scene audio
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1; // Ensure time scale is reset before loading the scene
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the scene loaded event
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        AudioManager.instance.StopAudio("event:/MainScene"); // Stop the main scene audio
+        AudioManager.instance.PlayAudio("event:/GameScene"); // Play the game scene audio
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe from the scene loaded event
         ReacquireUIReferences(); // Reacquire UI references after scene reload
-        InitializeGame();
+        InitializeGame(); // Initialize the game
     }
 
     void ReacquireUIReferences()
     {
-        canvas = FindObjectOfType<Canvas>();
+        canvas = FindObjectOfType<Canvas>(); // Find the UI canvas in the scene
         if (canvas == null)
         {
-            Debug.LogError("Canvas not found!");
+            Debug.LogError("Canvas not found!"); // Log an error if the canvas is not found
             return;
         }
 
-        FinalScoreText = canvas.transform.Find("GameOverPanel/FinalScoreText").GetComponent<TextMeshProUGUI>();
+        FinalScoreText = canvas.transform.Find("GameOverPanel/FinalScoreText").GetComponent<TextMeshProUGUI>(); // Find the final score text component
         if (FinalScoreText == null)
         {
-            Debug.LogError("FinalScoreText not found!");
+            Debug.LogError("FinalScoreText not found!"); // Log an error if the final score text component is not found
         }
 
-        scoreText = canvas.GetComponentInChildren<TextMeshProUGUI>();
+        scoreText = canvas.GetComponentInChildren<TextMeshProUGUI>(); // Find the score text component
         if (scoreText == null)
         {
-            Debug.LogError("ScoreText not found!");
+            Debug.LogError("ScoreText not found!"); // Log an error if the score text component is not found
         }
 
-        Transform gameOverPanelTransform = canvas.transform.Find("GameOverPanel");
+        Transform gameOverPanelTransform = canvas.transform.Find("GameOverPanel"); // Find the game over panel transform
         if (gameOverPanelTransform != null)
         {
-            gameOverPanel = gameOverPanelTransform.gameObject;
+            gameOverPanel = gameOverPanelTransform.gameObject; // Get the game over panel game object
         }
         else
         {
-            Debug.LogError("GameOverPanel not found!");
+            Debug.LogError("GameOverPanel not found!"); // Log an error if the game over panel transform is not found
         }
     }
 }
