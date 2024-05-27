@@ -1,13 +1,17 @@
-using UnityEngine;
+/* 
+--------------------------  
+    Balloon.cs
+Description: Script for tilting an object based on device acceleration
+--------------------------
 
-/// <summary>
-/// Represents a balloon object in the game.
-/// </summary>
+Literature:
+    * Unity Youtube Tutorial by Alexander Zotov- Accelerometer and Gyroscope:
+        [Link](https://www.youtube.com/watch?v=wpSm2O2LIRM&t=9s&ab_channel=AlexanderZotov)
+*/
+
+using UnityEngine;
 public class Balloon : MonoBehaviour
 {
-    /// <summary>
-    /// The speed at which the balloon tilts horizontally.
-    /// </summary>
     public float tiltSpeed = 5f;
 
     private Rigidbody2D rb;
@@ -24,10 +28,10 @@ public class Balloon : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 tilt = Input.acceleration;
+        Vector2 tilt = Input.acceleration;
         rb.velocity = new Vector2(tilt.x * tiltSpeed, 0);
         float clampedX = Mathf.Clamp(transform.position.x, -halfWidth, halfWidth);
-        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
+        transform.position = new Vector2(clampedX, transform.position.y);
     }
 }
 
