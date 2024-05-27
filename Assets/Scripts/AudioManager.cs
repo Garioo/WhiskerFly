@@ -1,3 +1,19 @@
+/*
+------------------------------
+    AudioManager.cs
+Description: A script to manage audio in the game using FMOD events
+------------------------------
+
+Litterature:
+    * FMOD Documentation:
+        [FMOD Documentation](https://www.fmod.com/docs/2.00/unity/integration-tutorial.html)
+    * EventInstance Documentation:
+        [EventInstance Documentation](https://www.fmod.com/resources/documentation-api?version=2.0&page=studio-api-eventinstance.html)
+    * ChatGPT:
+        [ChatGPT](https://openai.com/)
+
+*/
+
 using UnityEngine;
 using System;
 using System.Collections.Generic;
