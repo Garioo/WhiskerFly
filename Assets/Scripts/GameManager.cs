@@ -1,3 +1,14 @@
+/* 
+--------------------------  
+    GameManager.cs
+Description: Script for controlling points and game state
+--------------------------
+
+Literature:
+
+ChatGPT - Was used for the ReacquireUIReferences()
+    
+*/
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
