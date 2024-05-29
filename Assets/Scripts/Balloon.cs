@@ -7,6 +7,8 @@ Description: Script for tilting an object based on device acceleration
 Literature:
     * Unity Youtube Tutorial by Alexander Zotov- Accelerometer and Gyroscope:
         [Link](https://www.youtube.com/watch?v=wpSm2O2LIRM&t=9s&ab_channel=AlexanderZotov)
+    * Stack overflow forum - Camera orthographic size certain width
+        [Link] (https://stackoverflow.com/questions/69071921/camera-orthographic-size-certain-width)
 */
 
 using UnityEngine;
